@@ -11,9 +11,16 @@ class GameLogic():
     
     
     @staticmethod
-    def calculate_score(self,numbers):
-        dice_counter = Counter(numbers)
+    def calculate_score(numbers):
+        dice_counter = Counter(numbers) 
         score=0
+        if(len(dice_counter) == 6):
+            return 1500
+        if len(dice_counter) == 3 and dice_counter.most_common()[2][1] == 2:       
+	        return 750
+        # if(len(dice_counter) == 3 and len(numbers) == 6):
+        #     if(dice_counter.most_common()[0][1] == 2 and dice_counter.most_common()[1][1] == 2 and dice_counter.most_common()[2][1] == 2):
+        #         return 1500
 
         for key in dice_counter:
             count = dice_counter[key]        
