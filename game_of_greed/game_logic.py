@@ -2,16 +2,37 @@ from abc import abstractmethod
 from collections import Counter
 import random
 
+
+
 class GameLogic():
+
+    odds={1:1000,2:200,3:300,4:400,5:500,6:600}
+    odds_2={1:100,5:50}
+    
+    
     @staticmethod
     def calculate_score(self,numbers):
-        ctr = Counter(numbers)
-        if(ctr.most_common(1)[0][1] == 1):
-            return 1500
-        elif(ctr.most_common()[0][1] == 2 and ctr.most_common()[1][1] == 2 and ctr.most_common()[2][1] == 2):
-            return 1500
-        elif (ctr.most_common()[0][1] == 3 and ctr.most_common()[1][1] == 3):
-            return 1200
+        dice_counter = Counter(numbers)
+        score=0
+
+        for key in dice_counter:
+            count = dice_counter[key]        
+            if(count==3):
+                score=score+GameLogic.odds[key]
+            if(count==4):
+                score=score+GameLogic.odds[key]*2
+            if(count==5):
+                score=score+GameLogic.odds[key]*3
+            if(count==6):
+                score=score+GameLogic.odds[key]*4
+
+            if(key ==1 or key ==5):
+                print(key)
+                if(count==1):
+                    score=score+GameLogic.odds_2[key]
+                if(count==2):
+                    score=score+GameLogic.odds_2[key]*2
+        return int(score)
         
     @staticmethod 
     def roll_dice(times):
