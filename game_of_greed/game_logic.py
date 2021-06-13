@@ -17,7 +17,7 @@ class GameLogic():
         if(len(dice_counter) == 6):
             return 1500
         if len(dice_counter) == 3 and dice_counter.most_common()[2][1] == 2:       
-	        return 1500
+	        return 750
         # if(len(dice_counter) == 3 and len(numbers) == 6):
         #     if(dice_counter.most_common()[0][1] == 2 and dice_counter.most_common()[1][1] == 2 and dice_counter.most_common()[2][1] == 2):
         #         return 1500
