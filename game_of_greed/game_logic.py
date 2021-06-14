@@ -60,9 +60,12 @@ class Banker:
     def clear_shelf(self):
          self.shelved=0
 
-class Game:
-    def __init__(self, roller=None):
+class Game(Banker):
+    def __init__(self, roller=None, round=1, dice = 6):
         self.roller = roller
+        self.round = round
+        self.dice = dice
+        super().__init__()
 
     def play(self):
         print("Welcome to Game of Greed")
@@ -70,11 +73,31 @@ class Game:
         if user_input == 'n':
             print("OK. Maybe another time")
         else:
-            print('Starting round 1')
-            print('Rolling 6 dice...')
-            dice = self.roller(6)
-            printable_dice = ','.join([str(d) for d in dice])
-            print(printable_dice)
-            do_quit = input("Enter dice to keep (no spaces), or (q)uit: ")
-            if do_quit == 'q':
-                print('Thanks for playing. You earned 0 points')
+            while(True):
+                print(f'Starting round {self.round}')
+                print('Rolling 6 dice...')
+                dice = self.roller(6)
+                printable_dice = ','.join([str(d) for d in dice])
+                print(printable_dice)
+                do_quit = input("Enter dice to keep (no spaces), or (q)uit: ")
+                if do_quit == 'q':
+                    if(self.balance > 0):
+                        print(f'Total score is {self.balance} points')
+                    print(f'Thanks for playing. You earned {self.balance} points')
+                    break
+                else:
+                    round_score = GameLogic.calculate_score(tuple([int(do_quit)]))
+                    a = self.shelf(round_score)
+                    print(f'You have {self.shelved} unbanked points and 5 dice remaining')
+                    choice = input(f'(r)oll again, (b)ank your points or (q)uit ')
+                    if (choice == 'b'):
+                        print(f'You banked {self.shelved} points in round {self.round}')
+                        self.bank
+                        print(f'Total score is {self.balance} points')
+                        self.round += 1
+
+
+if __name__ == "__main__":
+    roller = GameLogic.roll_dice
+    game = Game(roller)
+    game.play()
