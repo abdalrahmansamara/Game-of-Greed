@@ -31,7 +31,6 @@ class GameLogic():
                 score=score+GameLogic.odds[key]*4
 
             if(key ==1 or key ==5):
-                print(key)
                 if(count==1):
                     score=score+GameLogic.odds_2[key]
                 if(count==2):
@@ -87,12 +86,12 @@ class Game(Banker):
                     break
                 else:
                     round_score = GameLogic.calculate_score(tuple([int(do_quit)]))
-                    a = self.shelf(round_score)
+                    self.shelf(round_score)
                     print(f'You have {self.shelved} unbanked points and 5 dice remaining')
                     choice = input(f'(r)oll again, (b)ank your points or (q)uit ')
                     if (choice == 'b'):
                         print(f'You banked {self.shelved} points in round {self.round}')
-                        self.bank
+                        self.bank()
                         print(f'Total score is {self.balance} points')
                         self.round += 1
 
