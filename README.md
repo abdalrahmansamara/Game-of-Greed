@@ -1,8 +1,10 @@
 # Game of greed
 
+
 this is the first phase of game of greed
 
 ## functionality
+
 
 up to now, we have two classes, GameLogic and Banker
 
