@@ -156,7 +156,7 @@ class Game(Banker):
                 self.handel_input_user()
                
 
-
+# main
 if __name__ == "__main__":
     roller = GameLogic.roll_dice
     game = Game(roller)
