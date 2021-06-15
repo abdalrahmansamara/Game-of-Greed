@@ -72,13 +72,22 @@ class Game(Banker):
         print(f'You banked 0 points in round {self.round}')
         print(f'Total score is {self.balance} points')
         self.clear_shelf()
+    
+    def checking_user_input(self,current_dice,do_quit):
+        tu2 = [int(i) for i in do_quit]
+        un = set(tu2)
+        flag = True
+        for i in un:
+            if current_dice.count(i) < tu2.count(i):
+                flag = False
+        return flag
 
-    def wlecomeing(self):
+    def welcoming(self):
         print("Welcome to Game of Greed")
         return input("Wanna play? ")
     
     def handel_input_user(self):
-        answer = self.rolling(self.dice)
+        [answer,current_dice] = self.rolling(self.dice)
         if (not answer):
             return
         do_quit = input("Enter dice to keep (no spaces), or (q)uit: ")
@@ -92,6 +101,11 @@ class Game(Banker):
             return
             # not sure about this, it has no need
         else:
+            while not self.checking_user_input(current_dice,do_quit):
+                print('Cheater!!! Or possibly made a typo...')
+                printable_dice = ','.join([str(d) for d in current_dice])
+                print(printable_dice)
+                do_quit = input("Enter dice to keep (no spaces), or (q)uit: ")
             self.else_if(do_quit)
 
     def else_if(self,do_quit): # assuming the user is honest for now
@@ -127,7 +141,9 @@ class Game(Banker):
             elif choice == 'q':
                 self.flag = False
                 self.round_flag = False
-                print('why quitting')
+                print(f'Total score is {self.balance} points')
+                print(f'Thanks for playing. You earned {self.balance} points')
+                # print('why quitting')
                 return
             elif choice == 'r':
                 # self.shelf(round_score)
@@ -145,13 +161,13 @@ class Game(Banker):
             self.Zilch()
             self.round_flag = False
             self.round += 1
-            return False
+            return [False,dice]
         else:
-            return True
+            return [True,dice]
 
     def play(self):
        
-        user_input = self.wlecomeing()
+        user_input = self.welcoming()
         if user_input == 'n':
             print("OK. Maybe another time")
         else:
