@@ -46,7 +46,7 @@ class Banker:
         self.shelved = 0
 
     def shelf(self, value):
-        self.shelved = value
+        self.shelved += value
         return self.shelved
 
     def bank(self):
@@ -63,40 +63,98 @@ class Game(Banker):
         self.round = round
         self.dice = dice
         super().__init__()
+        self.flag=True
+        self.round_flag = True
+    
+    def Zilch(self):
+        print('Zilch!!! Round over')
+        print(f'You banked 0 points in round {self.round}')
+        print(f'Total score is {self.balance} points')
+        self.clear_shelf()
+
+    def wlecomeing(self):
+        print("Welcome to Game of Greed")
+        return input("Wanna play? ")
+
+    def handel_input_user(self):
+        answer = self.rolling(self.dice)
+        if (not answer):
+            return
+        do_quit = input("Enter dice to keep (no spaces), or (q)uit: ")
+        if do_quit == 'q':
+            # if(self.balance > 0):
+            print(f'Total score is {self.balance} points')
+            print(f'Thanks for playing. You earned {self.balance} points')
+            # self.round_flag = False
+            self.flag=False
+            self.round_flag = False
+            return
+            # not sure about this, it has no need
+        else:
+            self.else_if(do_quit)
+
+    def else_if(self,do_quit): # assuming the user is honest for now
+        while(self.round_flag):
+            # get proper tuple out of the input
+            future_tuple = []
+            for num in do_quit:
+                future_tuple.append(int(num))
+            t = tuple(future_tuple)
+            self.dice -= len(t)
+            # end of tuple the input
+
+            round_score = GameLogic.calculate_score(t)
+
+            self.shelf(round_score)
+            print(
+                f'You have {self.shelved} unbanked points and {self.dice} dice remaining')
+            choice = input(
+                f'(r)oll again, (b)ank your points or (q)uit ')
+            if (choice == 'b'):
+                print(
+                    f'You banked {self.shelved} points in round {self.round}')
+                self.bank()
+                print(f'Total score is {self.balance} points')
+                self.round += 1
+                self.round_flag = False
+            # no provided info about q in choice
+            elif choice == 'q':
+                self.flag = False
+                self.round_flag = False
+                print('why quitting')
+                return
+            elif choice == 'r':
+                # self.shelf(round_score)
+                self.handel_input_user()
+
+
+    def rolling(self, dice):
+
+        print(f'Rolling {dice} dice...')
+        dice = self.roller(dice)
+        printable_dice = ','.join([str(d) for d in dice])
+        print(printable_dice)
+        zl = GameLogic.calculate_score(dice)
+        if zl == 0:
+            self.Zilch()
+            self.round_flag = False
+            self.round += 1
+            return False
+        else:
+            return True
 
     def play(self):
-        print("Welcome to Game of Greed")
-        user_input = input("Wanna play? ")
+       
+        user_input = self.wlecomeing()
         if user_input == 'n':
             print("OK. Maybe another time")
         else:
-            while(True):
+            while(self.flag):
                 print(f'Starting round {self.round}')
-                print('Rolling 6 dice...')
-                dice = self.roller(6)
-                printable_dice = ','.join([str(d) for d in dice])
-                print(printable_dice)
-                do_quit = input("Enter dice to keep (no spaces), or (q)uit: ")
-                if do_quit == 'q':
-                    if(self.balance > 0):
-                        print(f'Total score is {self.balance} points')
-                    print(
-                        f'Thanks for playing. You earned {self.balance} points')
-                    break
-                else:
-                    round_score = GameLogic.calculate_score(
-                        tuple([int(do_quit)]))
-                    self.shelf(round_score)
-                    print(
-                        f'You have {self.shelved} unbanked points and 5 dice remaining')
-                    choice = input(
-                        f'(r)oll again, (b)ank your points or (q)uit ')
-                    if (choice == 'b'):
-                        print(
-                            f'You banked {self.shelved} points in round {self.round}')
-                        self.bank()
-                        print(f'Total score is {self.balance} points')
-                        self.round += 1
+                self.round_flag = True
+                self.dice = 6
+                self.handel_input_user()
+               
 
 
 if __name__ == "__main__":
