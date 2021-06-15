@@ -65,6 +65,7 @@ class Game(Banker):
         super().__init__()
         self.flag=True
         self.round_flag = True
+        self.hot=False
     
     def Zilch(self):
         print('Zilch!!! Round over')
@@ -75,7 +76,7 @@ class Game(Banker):
     def wlecomeing(self):
         print("Welcome to Game of Greed")
         return input("Wanna play? ")
-
+    
     def handel_input_user(self):
         answer = self.rolling(self.dice)
         if (not answer):
@@ -103,6 +104,9 @@ class Game(Banker):
             self.dice -= len(t)
             # end of tuple the input
 
+            
+           
+            
             round_score = GameLogic.calculate_score(t)
 
             self.shelf(round_score)
@@ -110,6 +114,8 @@ class Game(Banker):
                 f'You have {self.shelved} unbanked points and {self.dice} dice remaining')
             choice = input(
                 f'(r)oll again, (b)ank your points or (q)uit ')
+            if len(Counter(t)) == 3 and Counter(t).most_common()[2][1] == 2:
+                self.dice=6
             if (choice == 'b'):
                 print(
                     f'You banked {self.shelved} points in round {self.round}')
