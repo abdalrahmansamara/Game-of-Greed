@@ -64,6 +64,9 @@ class Game(Banker):
         self.dice = dice
         super().__init__()
         self.flag=True
+
+
+
     def wlecomeing(self):
         print("Welcome to Game of Greed")
         return input("Wanna play? ")
@@ -80,10 +83,11 @@ class Game(Banker):
             self.else_if(do_quit)
 
     def else_if(self,do_quit):
+        self.dice-=1
         round_score = GameLogic.calculate_score(tuple([int(do_quit)]))
         self.shelf(round_score)
         print(
-            f'You have {self.shelved} unbanked points and 5 dice remaining')
+            f'You have {self.shelved} unbanked points and {self.dice} dice remaining')
         choice = input(
             f'(r)oll again, (b)ank your points or (q)uit ')
         if (choice == 'b'):
@@ -96,7 +100,7 @@ class Game(Banker):
     def rolling(self, dice):
 
         print(f'Rolling {dice} dice...')
-        dice = self.roller(6)
+        dice = self.roller(dice)
         printable_dice = ','.join([str(d) for d in dice])
         print(printable_dice)
 
