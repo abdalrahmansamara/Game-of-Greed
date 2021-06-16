@@ -171,7 +171,7 @@ class Game(Banker):
         if user_input == 'n':
             print("OK. Maybe another time")
         else:
-            while(self.flag):
+            while(self.flag and self.round < 20):
                 print(f'Starting round {self.round}')
                 self.round_flag = True
                 self.dice = 6
