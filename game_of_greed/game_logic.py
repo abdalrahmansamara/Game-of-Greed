@@ -79,7 +79,7 @@ class Banker:
 
 class Game(Banker):
     def __init__(self, roller=None, round=1, dice=6):
-        self.roller = roller
+        self.roller = roller or GameLogic.roll_dice
         self.round = round
         self.dice = dice
         super().__init__()
