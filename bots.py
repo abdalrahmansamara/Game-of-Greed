@@ -93,5 +93,5 @@ class BasicBot(BasePlayer):
     
 
 if __name__ == "__main__":
-    BasicBot.play()
+    # BasicBot.play()
     NervousNellie.play(100)
