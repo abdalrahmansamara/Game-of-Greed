@@ -196,6 +196,8 @@ class Game(Banker):
                 self.round_flag = True
                 self.dice = 6
                 self.handel_input_user()
+            else:
+                print(f'Thanks for playing. You earned {self.balance} points')
                
 
 # main
