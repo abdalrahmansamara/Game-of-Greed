@@ -8,13 +8,14 @@ from game_of_greed.game_logic import *
 
 
 
-class BasePlayer:
+class BasePlayer(Game):
     def __init__(self):
         self.old_print = print
         self.old_input = input 
         builtins.print = self._mock_print # Methods overriding
         builtins.input = self._mock_input # Methods overriding
         self.total_score = 0
+        super().__init__()
 
     def reset(self):
         builtins.print = self.old_print
@@ -54,6 +55,7 @@ class BasePlayer:
 
 
 class NervousNellie(BasePlayer):
+    temp_score = 0
     def __init__(self):
         super().__init__()
         self.roll = None
@@ -68,6 +70,7 @@ class NervousNellie(BasePlayer):
         self.old_print(first_arg)
 
     def _mock_input(self, *args):
+        
         prompt = args[0]
         if prompt.startswith("Wanna play?"):
             return "y"
@@ -76,9 +79,53 @@ class NervousNellie(BasePlayer):
             keepers = "".join([str(ch) for ch in scorers])
             return keepers
         elif prompt.startswith("(r)oll again, (b)ank your points or (q)uit "):
-            return "b"
+            scorers = GameLogic.get_scorers(self.roll)
+            if NervousNellie.is_it(self.roll):
+                no_of_remaining = 6
+            else:
+                no_of_remaining = 6 - len(self.roll)
+            calculated = GameLogic.calculate_score(scorers)
+            NervousNellie.temp_score += calculated
+            # if NervousNellie.temp_score >= 700:
+            #     NervousNellie.temp_score = 0
+            #     return 'b'
+            # if(NervousNellie.temp_score >= 500 and no_of_remaining >= 2):
+            #     return 'r'
+            # if NervousNellie.temp_score >= 400 and no_of_remaining >= 3:
+            #     return 'r'
+            # if calculated <= 300 and no_of_remaining >= 3:
+            #     return 'r'
+            # else:
+            #     return "b"
+
+
+            if NervousNellie.temp_score >= 1000:
+                NervousNellie.temp_score = 0
+                return 'b'
+
+            elif NervousNellie.temp_score >= 700 and no_of_remaining > 5:
+                    return 'r'
+            elif NervousNellie.temp_score >= 700:
+                NervousNellie.temp_score = 0
+                return 'b'
+            elif NervousNellie.temp_score <= 200:
+                return 'r'
+            elif no_of_remaining > 3:
+                return 'r'
+            NervousNellie.temp_score = 0
+            return 'b'
+
+            
         else:
             raise ValueError(f"Unrecognized prompt {prompt}")
+    @staticmethod
+    def is_it(numbers):
+        dice_counter = Counter(numbers)
+        if(len(dice_counter) == 6):
+            return True
+        elif len(dice_counter) == 3 and dice_counter.most_common()[2][1] == 2:
+            return True
+        return False
 
 class BasicBot(BasePlayer):
     def __init__(self):

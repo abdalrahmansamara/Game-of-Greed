@@ -86,6 +86,7 @@ class Game(Banker):
         self.flag=True
         self.round_flag = True
         self.hot=False
+        # self.special = False
     
     def Zilch(self):
         print('Zilch!!! Round over')
@@ -150,6 +151,7 @@ class Game(Banker):
                 f'(r)oll again, (b)ank your points or (q)uit ')
             if len(Counter(t)) == 3 and Counter(t).most_common()[2][1] == 2:
                 self.dice=6
+                # self.special = True
             if (choice == 'b'):
                 print(
                     f'You banked {self.shelved} points in round {self.round}')
@@ -166,6 +168,10 @@ class Game(Banker):
                 # print('why quitting')
                 return
             elif choice == 'r':
+                if self.dice == 0:
+                    self.flag=False
+                    self.round_flag = False
+                    return
                 # self.shelf(round_score)
                 self.handel_input_user()
 
