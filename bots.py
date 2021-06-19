@@ -86,24 +86,17 @@ class NervousNellie(BasePlayer):
                 no_of_remaining = 6 - len(self.roll)
             calculated = GameLogic.calculate_score(scorers)
             NervousNellie.temp_score += calculated
-            # if NervousNellie.temp_score >= 700:
-            #     NervousNellie.temp_score = 0
-            #     return 'b'
-            # if(NervousNellie.temp_score >= 500 and no_of_remaining >= 2):
-            #     return 'r'
-            # if NervousNellie.temp_score >= 400 and no_of_remaining >= 3:
-            #     return 'r'
-            # if calculated <= 300 and no_of_remaining >= 3:
-            #     return 'r'
-            # else:
-            #     return "b"
 
 
-            if NervousNellie.temp_score >= 1000:
+            # if NervousNellie.temp_score >= 1000 and NervousNellie.is_it(self.roll) == True:
+            #     # NervousNellie.temp_score = 0
+            #     return 'r'
+            
+            if NervousNellie.temp_score >= 1500:
                 NervousNellie.temp_score = 0
                 return 'b'
 
-            elif NervousNellie.temp_score >= 700 and no_of_remaining > 5:
+            elif NervousNellie.temp_score >= 750 and no_of_remaining > 5:
                     return 'r'
             elif NervousNellie.temp_score >= 700:
                 NervousNellie.temp_score = 0
